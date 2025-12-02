@@ -78,6 +78,11 @@ require_once 'helpers/google_setup.php';
             <?php if (isset($_GET['error']) && $_GET['error'] == 'invalid_login'): ?>
                 <div class="alert alert-error">Username atau password salah!</div>
             <?php endif; ?>
+            <?php if (isset($_GET['error']) && $_GET['error'] == 'session_expired'): ?>
+                <div class="alert alert-error" style="background-color: #fff7ed; color: #c2410c; border: 1px solid #fed7aa;">
+                    Waktu habis! Silakan login ulang.
+                </div>
+            <?php endif; ?>
             <?php if (isset($_GET['success']) && $_GET['success'] == 'registered'): ?>
                 <div class="alert alert-success">Registrasi berhasil! Silakan login.</div>
             <?php endif; ?>

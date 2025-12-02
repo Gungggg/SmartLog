@@ -1,9 +1,9 @@
 <?php
 session_start();
+require_once 'helpers/session_check.php';
 require_once 'config/database.php';
 require_once 'config/constants.php';
 
-// Cek Login
 if (!isset($_SESSION['logged_in'])) {
     header("Location: index.php");
     exit;

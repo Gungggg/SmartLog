@@ -61,7 +61,6 @@ $(document).ready(function() {
         });
     });
 });
-// FUNGSI AI GENERATOR (DIPERBARUI)
 function generateAI(id, btn) {
     // Simpan teks asli tombol untuk jaga-jaga kalau error
     const originalContent = btn.innerHTML;
@@ -122,7 +121,7 @@ function generateAI(id, btn) {
         // 5. GAGAL: Kembalikan Tombol & Tampilkan Pesan Jelas
         Swal.fire({
             title: 'Gagal!',
-            text: error.message, // Menampilkan pesan error asli dari PHP
+            text: error.message,
             icon: 'error',
             confirmButtonColor: '#4f46e5'
         });
@@ -133,3 +132,33 @@ function generateAI(id, btn) {
         btn.classList.remove('opacity-75', 'cursor-not-allowed');
     });
 }
+
+let idleTimer;
+const timeoutLimit = 3 * 60 * 1000;
+
+function resetTimer() {
+    clearTimeout(idleTimer);
+    
+    // Set timer baru: Jika tidak ada gerakan selama 3 menit, jalankan logout
+    idleTimer = setTimeout(function() {
+        // Tampilkan peringatan manis sebelum menendang user
+        Swal.fire({
+            title: 'Sesi Habis!',
+            text: 'Anda tidak aktif selama 3 menit. Silakan login kembali.',
+            icon: 'warning',
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false
+        }).then(() => {
+            // Arahkan ke file logout
+            window.location.href = 'logout.php';
+        });
+    }, timeoutLimit);
+}
+
+window.onload = resetTimer;
+document.onmousemove = resetTimer;
+document.onkeypress = resetTimer;
+document.ontouchstart = resetTimer; 
+document.onclick = resetTimer;
+document.onscroll = resetTimer;

@@ -7,6 +7,7 @@ if (!isset($_SESSION['logged_in'])) {
 }
 
 // 2. Load Konfigurasi & Helper
+require_once 'helpers/session_check.php';
 require_once 'config/database.php';
 require_once 'config/constants.php';
 
