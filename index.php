@@ -60,12 +60,10 @@ require_once 'helpers/google_setup.php';
             <h1>Masuk</h1>
             
             <div class="social-container">
-                <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
                 <a href="<?= $google_login_url ?>" class="social" title="Login dengan Google" 
                 style="border-color: #db4437; color: #db4437;">
                     <i class="fab fa-google"></i>
                 </a>
-                <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
             </div>
             
             <span style="color: #999; margin-bottom: 15px;">atau gunakan akun anda</span>
