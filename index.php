@@ -28,37 +28,32 @@ require_once 'helpers/google_setup.php';
 <div class="container" id="container">
     
     <div class="form-container sign-up-container">
-        <form action="helpers/auth_helper.php?action=register" method="POST">
-            <h1>Buat Akun</h1>
-            
-            <div class="social-container">
-                <a href="#" class="social" title="Login Facebook (Segera Hadir)">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
+    <form action="helpers/auth_helper.php?action=register" method="POST">
+        <h1>Buat Akun</h1>
+        
+        <div class="social-container">
+            <a href="<?= $google_login_url ?>" class="social" style="border-color: #db4437; color: #db4437;"><i class="fab fa-google"></i></a>
+        </div>
+        
+        <span style="color: #999; margin-bottom: 15px;">atau gunakan email untuk pendaftaran</span>
 
-                <a href="<?= $google_login_url ?>" class="social" title="Login dengan Google" 
-                style="border-color: #db4437; color: #db4437;">
-                    <i class="fab fa-google"></i>
-                </a>
+        <?php if (isset($_GET['error']) && $_GET['error'] == 'username_taken'): ?>
+            <div class="alert alert-error">Username sudah digunakan!</div>
+        <?php endif; ?>
 
-                <a href="#" class="social" title="Login LinkedIn (Segera Hadir)">
-                    <i class="fab fa-linkedin-in"></i>
-                </a>
+        <?php if (isset($_GET['error']) && $_GET['error'] == 'user_not_found'): ?>
+            <div class="alert alert-error" style="background-color: #fff7ed; color: #ea580c; border: 1px solid #fed7aa;">
+                Akun belum terdaftar. Silakan buat baru!
             </div>
-            
-            <span style="color: #999; margin-bottom: 15px;">atau gunakan email untuk pendaftaran</span>
-
-            <?php if (isset($_GET['error']) && $_GET['error'] == 'username_taken'): ?>
-                <div class="alert alert-error">Username sudah digunakan!</div>
-            <?php endif; ?>
-            
-            <input type="text" name="full_name" placeholder="Nama Lengkap" required />
-            <input type="text" name="username" placeholder="Username" required />
-            <input type="password" name="password" placeholder="Password" required />
-            
-            <button type="submit">Daftar</button>
-        </form>
-    </div>
+        <?php endif; ?>
+        
+        <input type="text" name="full_name" placeholder="Nama Lengkap" required />
+        <input type="text" name="username" placeholder="Username" value="<?= isset($_GET['user']) ? htmlspecialchars($_GET['user']) : '' ?>" required />
+        <input type="password" name="password" placeholder="Password" required />
+        
+        <button type="submit">Daftar</button>
+    </form>
+</div>
 
     <div class="form-container sign-in-container">
         <form action="helpers/auth_helper.php?action=login" method="POST">
@@ -129,7 +124,7 @@ require_once 'helpers/google_setup.php';
     });
 
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('error') === 'username_taken' || urlParams.get('action') === 'register') {
+    if (urlParams.get('action') === 'register') {
         container.classList.add("right-panel-active");
     }
 </script>

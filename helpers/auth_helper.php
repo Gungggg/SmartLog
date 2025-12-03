@@ -42,23 +42,23 @@ elseif ($action === 'login') {
     $query = "SELECT * FROM users WHERE username = '$username'";
     $result = mysqli_query($conn, $query);
 
-    if (mysqli_num_rows($result) === 1) {
-        $user = mysqli_fetch_assoc($result);
-
-        // 2. Verifikasi Password (Hash vs Input)
-        if (password_verify($password, $user['password'])) {
-            // 3. Set Session (Menandai user sudah login)
-            $_SESSION['user_id']   = $user['user_id'];
-            $_SESSION['full_name'] = $user['full_name'];
-            $_SESSION['logged_in'] = true;
-
-            // Login Sukses -> Ke Dashboard
-            header("Location: " . BASE_URL . "dashboard.php");
-            exit;
-        }
+    if (mysqli_num_rows($result) === 0) {
+        header("Location: ../index.php?action=register&error=user_not_found&user=" . urlencode($username));
+        exit;
     }
 
-    // Login Gagal -> Kembali ke Login dengan pesan error
-    header("Location: " . BASE_URL . "index.php?error=invalid_login");
-}
+    $user = mysqli_fetch_assoc($result);
+    if (password_verify($password, $user['password'])) {
+        // Password Benar -> Login Sukses
+        $_SESSION['user_id'] = $user['user_id'];
+        $_SESSION['full_name'] = $user['full_name'];
+        $_SESSION['logged_in'] = true;
+        header("Location: ../dashboard.php");
+        exit;
+    } else {
+        // Password Salah -> Tetap di Login
+        header("Location: ../index.php?error=invalid_password");
+        exit;
+    }
+    }
 ?>

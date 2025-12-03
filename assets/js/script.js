@@ -1,6 +1,4 @@
 $(document).ready(function() {
-    
-    // 1. CEK PARAMETER URL UNTUK NOTIFIKASI
     const urlParams = new URLSearchParams(window.location.search);
     const msg = urlParams.get('msg');
 
@@ -39,7 +37,6 @@ $(document).ready(function() {
         }
     }
 
-    // 2. INTERSEPSI TOMBOL DELETE (Agar pakai SweetAlert)
     $('.delete-btn').on('click', function(e) {
         e.preventDefault(); // Matikan link asli
         const href = $(this).attr('href'); // Ambil link hapusnya
@@ -64,13 +61,10 @@ $(document).ready(function() {
 function generateAI(id, btn) {
     // Simpan teks asli tombol untuk jaga-jaga kalau error
     const originalContent = btn.innerHTML;
-    
-    // 1. INDIKATOR VISUAL: Ubah Tombol jadi Loading
     btn.innerHTML = `<svg class="animate-spin h-4 w-4 text-white mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Sedang Berpikir...`;
     btn.disabled = true;
     btn.classList.add('opacity-75', 'cursor-not-allowed');
 
-    // 2. INDIKATOR PROSES: Tampilkan Toast "Memulai..."
     const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
@@ -86,11 +80,9 @@ function generateAI(id, btn) {
         body: JSON.stringify({ id: id })
     })
     .then(async response => {
-        // Cek apakah response valid JSON?
         const isJson = response.headers.get('content-type')?.includes('application/json');
         const data = isJson ? await response.json() : null;
 
-        // Jika response bukan OK (Error 500/404)
         if (!response.ok) {
             const error = (data && data.message) || response.statusText;
             throw new Error(error);
@@ -141,7 +133,7 @@ function resetTimer() {
     
     // Set timer baru: Jika tidak ada gerakan selama 3 menit, jalankan logout
     idleTimer = setTimeout(function() {
-        // Tampilkan peringatan manis sebelum menendang user
+        // Tampilkan peringatan sebelum menendang user
         Swal.fire({
             title: 'Sesi Habis!',
             text: 'Anda tidak aktif selama 3 menit. Silakan login kembali.',
